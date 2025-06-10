@@ -1,9 +1,25 @@
+"""GUI application for filtering Windows Event log Excel files.
+
+The module provides :class:`ExcelFilterApp`, a small Tkinter based interface
+that allows the user to choose an Excel file, select ``EventId`` values and
+export the filtered entries to a new file.
+"""
+
 import os
 import pandas as pd
 from tkinter import Tk, Label, Button, Entry, filedialog, messagebox, Frame, Checkbutton, IntVar, Scrollbar, Canvas
 
 class ExcelFilterApp:
+    """Application window that filters EventId entries in an Excel file.
+
+    Parameters
+    ----------
+    master : tkinter.Tk
+        Root window used as the parent for all widgets.
+    """
+
     def __init__(self, master):
+        """Initialize the graphical interface within *master*."""
         self.master = master
         master.title("nLOGxtractor by forense.io")
         master.geometry("800x570")  # Ajuste do tamanho da janela
@@ -52,9 +68,17 @@ class ExcelFilterApp:
         self.footer_label.grid(row=6, column=0, columnspan=3, sticky='ew', pady=(10, 5))
 
     def on_frame_configure(self, event=None):
+        """Update canvas scroll region when the inner frame changes size.
+
+        Parameters
+        ----------
+        event : tkinter.Event, optional
+            Event that triggered the resize.
+        """
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
     def browse_file(self):
+        """Prompt the user for an Excel file and load its ``EventId`` values."""
         self.filename = filedialog.askopenfilename(filetypes=[("Arquivos Excel", "*.xlsx")])
         if self.filename:
             self.entry.config(state='normal')
@@ -65,9 +89,15 @@ class ExcelFilterApp:
             self.load_eventids()
 
     def show_processing(self):
+        """Show a processing message in the status box."""
         self.status_box.config(text="Status: Processando...")
 
     def load_eventids(self):
+        """Load ``EventId`` values from the selected Excel file.
+
+        The method populates the scrollable area with a checkbutton for each
+        unique ``EventId`` present in the file.
+        """
         try:
             df = pd.read_excel(self.filename)
             self.event_ids = df['EventId'].unique()
@@ -85,6 +115,7 @@ class ExcelFilterApp:
             self.status_box.config(text="Status: Erro ao carregar arquivo.")
 
     def filter_excel(self):
+        """Filter data by the selected ``EventId`` values and save the result."""
         if not self.filename:
             messagebox.showwarning("Aviso", "Por favor, selecione um arquivo!")
             return
@@ -107,6 +138,7 @@ class ExcelFilterApp:
             messagebox.showerror("Erro", f"Erro ao filtrar dados: {e}")
 
     def reset_application(self):
+        """Clear widgets so the user can start a new filtering operation."""
         self.entry.config(state='normal')
         self.entry.delete(0, "end")
         self.entry.config(state='readonly')
