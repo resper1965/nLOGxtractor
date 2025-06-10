@@ -1,4 +1,3 @@
-import os
 import pandas as pd
 from tkinter import Tk, Label, Button, Entry, filedialog, messagebox, Frame, Checkbutton, IntVar, Scrollbar, Canvas
 
