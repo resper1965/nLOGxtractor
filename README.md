@@ -18,11 +18,16 @@ O nLOGxtractor é uma ferramenta desenvolvida por forense.io para ajudar profiss
 - pandas
 - tkinter
 
+As dependências podem ser instaladas com:
+```
+pip install -r requirements.txt
+```
+
 ## Instalação
 Clone este repositório e instale as dependências necessárias:
 git clone https://github.com/seu_usuario/nLOGxtractor.git
 cd nLOGxtractor
-pip install pandas
+pip install -r requirements.txt
 
 csharp
 Copiar código
